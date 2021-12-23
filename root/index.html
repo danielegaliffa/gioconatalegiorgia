@@ -1,21 +1,36 @@
 <html>
         <head>
-                <title>TEST TITLE INDEX</title>
+                <title>TEST TITLE INDEX 2</title>
+                <link rel="stylesheet" href="css/style.css">
+                <script src="js/app.js"></script>
         </head>
         <body>
+            <div class="main">
+                <div id="questions">
+                    <div id="title" class="question_title"></div>
+                    <div>
+                        <a id="restart" class="answer_btn hidden" href="#">Nuova partita</a>
+                    </div>
+                    <div id="questions_box" class="questions">
+                        <a id="answer_1" class="answer_btn" href="#">aa</a>
+                        <a id="answer_2" class="answer_btn" href="#">bb</a>
+                        <a id="answer_3" class="answer_btn" href="#">cc</a>
+                        <a id="answer_4" class="answer_btn" href="#">dd</a>
+                    </div>
+
+
+                    <!--
+                    <div class="btns">
+                        <a id="previous_btn" href="#">previous</a>
+                        <a id="next_btn" href="#">next</a>
+                    </div>
+                -->
+                </div>
+
+                <div id="" class="score"></div>
+            <div>
             <script>
-                console.log("AAA");
-                var xmlhttp = new XMLHttpRequest();
-                var url = "https://opensheet.vercel.app/1nmtGvMlh9Ziua9hOOcnncxpEI24yG6yXirLFSyVN9yk/data";
-                xmlhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        var data = JSON.parse(this.responseText);
-                        console.log(data);
-                    }
-                };
-                xmlhttp.open("GET", url, true);
-                xmlhttp.send();
-                console.log("CIAO");
+                init();
             </script>
         </body>
 </html>
