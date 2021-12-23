@@ -1,0 +1,21 @@
+<html>
+        <head>
+                <title>TEST TITLE INDEX</title>
+        </head>
+        <body>
+            <script>
+                console.log("AAA");
+                var xmlhttp = new XMLHttpRequest();
+                var url = "https://opensheet.vercel.app/1nmtGvMlh9Ziua9hOOcnncxpEI24yG6yXirLFSyVN9yk/data";
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var data = JSON.parse(this.responseText);
+                        console.log(data);
+                    }
+                };
+                xmlhttp.open("GET", url, true);
+                xmlhttp.send();
+                console.log("CIAO");
+            </script>
+        </body>
+</html>
