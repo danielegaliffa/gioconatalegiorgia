@@ -1,24 +1,30 @@
 <html>
         <head>
-                <title>TEST TITLE INDEX 2</title>
+                <title>Il quiz di Natale di Giorgia</title>
                 <link rel="stylesheet" href="css/style.css">
                 <script src="js/app.js"></script>
         </head>
         <body>
-            <div class="main">
+            <div id="loading" class="loading">
+                <div class="main">
+                    caricamento...
+                </div>
+            </div>
+            <div id="intro" class="intro hidden">
+                <div class="main">
+                    <a id="startBtn" class="answer_btn" href="#">INIZIA</a>
+                </div>
+            </div>
+            <div id="main" class="main hidden">
                 <div id="questions">
                     <div id="title" class="question_title"></div>
-                    <div>
-                        <a id="restart" class="answer_btn hidden" href="#">Nuova partita</a>
+                    <a id="restartBtn" class="answer_btn hidden" href="#">RICOMINCIA</a>
+                    <div id="questions_box" class="questions hidden">
+                        <a id="answer_1" class="answer_btn" href="#"></a>
+                        <a id="answer_2" class="answer_btn" href="#"></a>
+                        <a id="answer_3" class="answer_btn" href="#"></a>
+                        <a id="answer_4" class="answer_btn" href="#"></a>
                     </div>
-                    <div id="questions_box" class="questions">
-                        <a id="answer_1" class="answer_btn" href="#">aa</a>
-                        <a id="answer_2" class="answer_btn" href="#">bb</a>
-                        <a id="answer_3" class="answer_btn" href="#">cc</a>
-                        <a id="answer_4" class="answer_btn" href="#">dd</a>
-                    </div>
-
-
                     <!--
                     <div class="btns">
                         <a id="previous_btn" href="#">previous</a>
@@ -26,8 +32,6 @@
                     </div>
                 -->
                 </div>
-
-                <div id="" class="score"></div>
             <div>
             <script>
                 init();

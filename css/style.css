@@ -1,51 +1,68 @@
-.answer_btn {
-	position: relative; 
-	background-color: #FF0000;
-	width:400px;
-	height: 30px;
-	margin-bottom: 10px;
-	text-align: center;
-	padding: 30px 0;
-	font-size: 20px;
-	font-weight: bold;
-	color: #FFFFFF;
-	float:left;
-	clear: left;
-	border-radius: 25px;
+@font-face {
+  font-family: 'Giorgiafont';
+  src: url('fonts/Thrive Xmas.otf');
+}
+
+body {
+ background-image: url("../img/bg.jpg");
+ background-color: #cccccc;
+ font-family: 'Giorgiafont';
+}
+
+.intro {
+	display: inline-block;
+	margin: 0 auto;
+	width:100%;
+	height: 100%; 
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
 }
 
 .main {
 	width:100%;
 	text-align: center;
-	display: block;
-	display: flex;
 	justify-content: center;
 }
+
+.questions{
+	margin: 0 auto;
+	width:100%;
+	height: 100%; 
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+
+
+.question_title {
+	font-size: 30px;
+	font-weight: bold;
+	color: #000;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.answer_btn {
+	position: relative; 
+	background-color: #FF0000;
+	width:100%;
+	height: 60px;
+	margin-bottom: 10px;
+	text-align: center;
+	padding: 30px 0;
+	font-size: 40px;
+	font-weight: bold;
+	color: #FFFFFF;
+	float:left;
+	clear: left;
+	border-radius: 25px;
+	text-decoration: none;
+}
+
 
 .hidden {
 	visibility: hidden;
 	display: none;
 }
 
-.btns{
-	float:left;
-	clear: left;
-	width:100%;
-	background-color: #FFFF00;
-	height: 30px;
-	position: relative; 
-}
-
-.question_title {
-	font-size: 30px;
-	font-weight: bold;
-	color: #000;
-}
-
-.questions{
-	float:left;
-	clear: left;
-	width:100%;
-	height: 100%;
-	position: relative; 
-}

@@ -1,9 +1,8 @@
-var questions = [];
-var questionIndex = -1;
-var maxQuestions = 10;
-var answers = [];
-var points = 0;
-var loaded_data;
+var questions = null;
+var questionIndex = null;
+var maxQuestions = null;
+var points = null;
+var loaded_data = null;
 
 function shuffle(array) {
   let currentIndex = array.length,  randomIndex;
@@ -18,27 +17,37 @@ function shuffle(array) {
   return array;
 }
 
-// Used like so
-var arr = [2, 11, 37, 42];
-shuffle(arr);
+var _start = function(){
+	_setItemVisibility("restartBtn",false);
+	_setItemVisibility("loading",false);
+	_setItemVisibility("intro",false);
+	_setItemVisibility("main",true);
+}
+
+var _restart = function(){
+	_resetData();
+}
 
 var _parseQuestions = function(p_question){
 	var data = [];
 	points = 0;
 	questions = [];
-	answers = [];
+	var answers = [];
 	for(var a=0;a<p_question.length;a++){
 		var curQ = p_question[a];
-		curQ.answers = [];
+		var curItem = {};
+		curItem.question = curQ.question;
+		curItem.answers = [];
 		for(var i=1;i<5;i++){
-			var answer = {};
-			answer.label = curQ['answer_'+i];
-			answer.correct = (i==1)? true : false;
-			curQ.answers.push(answer);
-			delete curQ['answer_'+i];
+			if(curQ['answer_'+i] != null){
+				var answer = {};
+				answer.label = curQ['answer_'+i];
+				answer.correct = (i==1)? true : false;
+				curItem.answers.push(answer);
+			}
 		}
-		curQ.answers = shuffle(curQ.answers);
-		data.push(curQ);
+		curItem.answers = shuffle(curItem.answers);
+		data.push(curItem);
 	}
 	data = shuffle(data);
 	for(var a=0;a<maxQuestions;a++){
@@ -47,28 +56,40 @@ var _parseQuestions = function(p_question){
 	return questions;
 }
 
-var _setupQuestions = function(){
-	questions = _parseQuestions(loaded_data);
-	nextQuestion();
+var _initQuestions = function(){
+	if(loaded_data != null){
+		questions = _parseQuestions(loaded_data);
+		nextQuestion();
+	}
 }
 
 
 var _initData = function(){
-	questionIndex = -1;
 	var xmlhttp = new XMLHttpRequest();
 	var url = "https://opensheet.vercel.app/1nmtGvMlh9Ziua9hOOcnncxpEI24yG6yXirLFSyVN9yk/data";
 	xmlhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
 	    	loaded_data = JSON.parse(this.responseText);
-	        _setupQuestions();
+	    	_setupUI();
+	    	_initUI();
+	        _initQuestions();
 	    }
 	};
 	xmlhttp.open("GET", url, true);
-	xmlhttp.send();
+	xmlhttp.send();	
+}
+
+var _resetData = function(){
+	questions = [];
+	questionIndex = -1;
+	maxQuestions = 10;
+	points = 0;
+	_initQuestions();
+	_start();
 }
 
 function init() {
-	_setupUI();
+	_resetData();
 	_initData();
 }
 
@@ -83,8 +104,14 @@ var nextQuestion = function(){
 }
 
 var _setItemVisibility = function(p_itemID,p_value){
-	if(document.getElementById(p_itemID) != null)
-		document.getElementById(p_itemID).style.visibility = (p_value == true)? "visible" : "hidden";
+	if(document.getElementById(p_itemID) != null){
+		var item = document.getElementById(p_itemID);
+		if(p_value){
+			item.classList.remove("hidden");
+		}else{
+			item.classList.add("hidden");
+		}
+	}
 }
 
 
@@ -99,32 +126,54 @@ var _renderQuestion = function() {
 		txt = "Domanda n." + parseInt(questionIndex+1);
 		txt += "<br />"
 		txt += curQuestion.question;
+		for(var a=0;a<4;a++){
+			var itemID = "answer_"+(a+1);
+			_setItemVisibility(itemID,false);
+		}
+
 		for(var a=0;a<curQuestion.answers.length;a++){
 			var curA = curQuestion.answers[a];
-			document.getElementById("answer_"+(a+1)).innerHTML = curA.label + " " + curA.correct;
-			document.getElementById("answer_"+(a+1)).onclick = function() { 
+			var itemID = "answer_"+(a+1);
+			document.getElementById(itemID).innerHTML = curA.label;
+			document.getElementById(itemID).onclick = function() { 
 				var index = parseInt(event.target.getAttribute("id").replace('answer_', ''));
 				return _answerQuestion(curQuestion.answers[index-1].correct); 
 			};
+			_setItemVisibility(itemID,true);
 		}
 	}else{
 		txt = "Complimenti! Hai completato il quiz!";
 		txt += "<br />";
 		txt += "Hai realizzato " + points + " punti!";
 		questions_visibility = false;
+		_setItemVisibility("restartBtn",true);
 	}
 	document.getElementById("title").innerHTML = txt;
 	_setItemVisibility("questions_box",questions_visibility);
 }
 
+var _initUI = function(){
+	_setItemVisibility("loading",false);
+	_setItemVisibility("main",false);
+	_setItemVisibility("intro",true);
+}
+
 var _setupUI = function() {
 	var prevBtn = document.getElementById("previous_btn");
 	var nextBtn = document.getElementById("next_btn");
+	var startBtn = document.getElementById("startBtn");
+	var restartBtn = document.getElementById("restartBtn");
 	if(prevBtn != null)
 		prevBtn.onclick = previousQuestion;
 
 	if(nextBtn != null)
 		nextBtn.onclick = nextQuestion;
+
+	if(startBtn != null)
+		startBtn.onclick = _start;
+
+	if(restartBtn != null)
+		restartBtn.onclick = _restart;
 }
 
 var _answerQuestion = function(p_value){
