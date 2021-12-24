@@ -1,6 +1,8 @@
+var MAX_ANSWERS = 10;
+var MAX_QUESTIONS = 10;
+
 var questions = null;
 var questionIndex = null;
-var maxQuestions = null;
 var points = null;
 var loaded_data = null;
 
@@ -38,7 +40,7 @@ var _parseQuestions = function(p_question){
 		var curItem = {};
 		curItem.question = curQ.question;
 		curItem.answers = [];
-		for(var i=1;i<5;i++){
+		for(var i=1;i<MAX_ANSWERS;i++){
 			if(curQ['answer_'+i] != null){
 				var answer = {};
 				answer.label = curQ['answer_'+i];
@@ -50,7 +52,8 @@ var _parseQuestions = function(p_question){
 		data.push(curItem);
 	}
 	data = shuffle(data);
-	for(var a=0;a<maxQuestions;a++){
+	var maxNum = (MAX_QUESTIONS > data.length)? data.length : MAX_QUESTIONS;
+	for(var a=0;a<MAX_QUESTIONS;a++){
 		questions.push(data[a]);
 	}
 	return questions;
@@ -82,7 +85,6 @@ var _initData = function(){
 var _resetData = function(){
 	questions = [];
 	questionIndex = -1;
-	maxQuestions = 10;
 	points = 0;
 	_initQuestions();
 	_start();
@@ -126,7 +128,7 @@ var _renderQuestion = function() {
 		txt = "Domanda n." + parseInt(questionIndex+1);
 		txt += "<br />"
 		txt += curQuestion.question;
-		for(var a=0;a<4;a++){
+		for(var a=0;a<MAX_ANSWERS;a++){
 			var itemID = "answer_"+(a+1);
 			_setItemVisibility(itemID,false);
 		}
@@ -134,12 +136,15 @@ var _renderQuestion = function() {
 		for(var a=0;a<curQuestion.answers.length;a++){
 			var curA = curQuestion.answers[a];
 			var itemID = "answer_"+(a+1);
-			document.getElementById(itemID).innerHTML = curA.label;
-			document.getElementById(itemID).onclick = function() { 
-				var index = parseInt(event.target.getAttribute("id").replace('answer_', ''));
-				return _answerQuestion(curQuestion.answers[index-1].correct); 
-			};
-			_setItemVisibility(itemID,true);
+			var item = document.getElementById(itemID);
+			if(item != null){
+				item.innerHTML = curA.label;
+				item.onclick = function() { 
+					var index = parseInt(event.target.getAttribute("id").replace('answer_', ''));
+					return _answerQuestion(curQuestion.answers[index-1].correct); 
+				};
+				_setItemVisibility(itemID,true);
+			}
 		}
 	}else{
 		txt = "Complimenti! Hai completato il quiz!";
